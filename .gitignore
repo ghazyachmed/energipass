@@ -32,3 +32,6 @@ Desktop.ini
 dist/
 node_modules/
 .wrangler/
+
+# Test output
+test-results/

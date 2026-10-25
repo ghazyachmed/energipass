@@ -1,8 +1,10 @@
-import { access, copyFile, mkdir, rm } from 'node:fs/promises';
+import { access, cp, mkdir, rm } from 'node:fs/promises';
 
 const projectRoot = new URL('../', import.meta.url);
 const outputDirectory = new URL('dist/', projectRoot);
-const assets = ['index.html', 'styles.css', 'mock-data.js', 'app.js'];
+
+// Browser assets only. worker/ is bundled by Wrangler, tests/ and docs/ are not served.
+const assets = ['index.html', 'styles.css', 'src/'];
 
 // Check every source before replacing the previous build.
 for (const asset of assets) {
@@ -13,7 +15,7 @@ await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(outputDirectory, { recursive: true });
 
 for (const asset of assets) {
-  await copyFile(new URL(asset, projectRoot), new URL(asset, outputDirectory));
+  await cp(new URL(asset, projectRoot), new URL(asset, outputDirectory), { recursive: true });
 }
 
-console.log(`Built ${assets.length} static assets into dist/`);
+console.log(`Built ${assets.length} static asset entries into dist/`);

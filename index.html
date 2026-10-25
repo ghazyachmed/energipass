@@ -3,54 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="EnergiPass — Green Vendor Passport untuk kesiapan tender pemasok energi Indonesia." />
-  <title>EnergiPass — Green Vendor Passport</title>
+  <meta name="description" content="EnergiAction Bankable: alat bantu engineer untuk menyusun justifikasi investasi efisiensi energi sistem kompresor dari temuan audit sampai investment brief." />
+  <title>EnergiAction Bankable</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
   <div class="app-shell">
-    <aside class="sidebar" aria-label="Navigasi utama">
+    <aside class="sidebar" id="sidebar" aria-label="Navigasi langkah">
       <div class="brand-block">
-        <div class="brand-mark" aria-hidden="true">EP</div>
+        <div class="brand-mark" aria-hidden="true">EA</div>
         <div>
-          <div class="brand-name">EnergiPass</div>
-          <div class="brand-subtitle">Green Vendor Passport</div>
+          <div class="brand-name">EnergiAction</div>
+          <div class="brand-subtitle">Bankable · Investment Readiness</div>
         </div>
       </div>
 
-      <nav class="nav-list">
-        <button class="nav-item active" data-route="dashboard" aria-current="page">
-          <span class="nav-index">01</span><span>Beranda</span>
-        </button>
-        <button class="nav-item" data-route="tender">
-          <span class="nav-index">02</span><span>Tender</span>
-        </button>
-        <button class="nav-item" data-route="evidence">
-          <span class="nav-index">03</span><span>Evidence</span>
-        </button>
-        <button class="nav-item" data-route="pack">
-          <span class="nav-index">04</span><span>Paket Tender</span>
-        </button>
+      <nav aria-label="Alur kerja">
+        <ol class="nav-list">
+          <li><a class="nav-item" href="#/assessment" data-route="assessment"><span class="nav-index">01</span><span class="nav-text"><span>Assessment</span><small data-bind="nav.assessment"></small></span></a></li>
+          <li><a class="nav-item" href="#/scenarios" data-route="scenarios"><span class="nav-index">02</span><span class="nav-text"><span>Skenario</span><small data-bind="nav.scenarios"></small></span></a></li>
+          <li><a class="nav-item" href="#/financial" data-route="financial"><span class="nav-index">03</span><span class="nav-text"><span>Analisis Finansial</span><small data-bind="nav.financial"></small></span></a></li>
+          <li><a class="nav-item" href="#/evidence" data-route="evidence"><span class="nav-index">04</span><span class="nav-text"><span>Evidence Review</span><small data-bind="nav.evidence"></small></span></a></li>
+          <li><a class="nav-item" href="#/brief" data-route="brief"><span class="nav-index">05</span><span class="nav-text"><span>Investment Brief</span><small>Cetak / PDF</small></span></a></li>
+        </ol>
       </nav>
 
       <div class="sidebar-bottom">
-        <div class="context-label">Perusahaan aktif</div>
-        <div class="company-name">PT Energi Nusantara Teknik</div>
-        <div class="company-meta">Data fiktif</div>
+        <div class="context-label">Data aktif</div>
+        <div class="company-name" data-bind="sidebar.fixture"></div>
+        <div class="company-meta" data-bind="sidebar.origin"></div>
+        <button class="sidebar-button" type="button" data-action="reset-fixture">Reset ke data contoh</button>
       </div>
     </aside>
 
     <div class="main-shell">
       <header class="topbar">
-        <button class="mobile-menu" id="mobile-menu" aria-label="Buka navigasi" aria-expanded="false">☰</button>
+        <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="sidebar">☰</button>
         <div class="topbar-context">
-          <span class="eyebrow">Vendor</span>
-          <strong id="topbar-title">Beranda</strong>
+          <span class="eyebrow">Sistem kompresor</span>
+          <strong id="topbar-title">Assessment</strong>
         </div>
         <div class="topbar-actions">
-          <div class="system-badge" title="Perusahaan, tender, dan evidence menggunakan data fiktif">Demo · data fiktif</div>
-          <button class="text-button" id="help-button">Panduan</button>
+          <span class="system-badge badge-simulation" data-bind="topbar.origin" title="Semua data contoh adalah simulasi fiktif">Data simulasi</span>
+          <span class="system-badge" id="ai-status-chip" data-status="unknown">Memeriksa status AI</span>
+          <button class="text-button" id="help-button" type="button">Panduan</button>
         </div>
       </header>
 
@@ -58,39 +55,31 @@
     </div>
   </div>
 
-  <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
-  <aside class="drawer" id="evidence-drawer" aria-hidden="true" aria-label="Detail evidence">
-    <div class="drawer-header">
-      <div>
-        <span class="eyebrow">Detail Evidence</span>
-        <h2 id="drawer-title">Evidence</h2>
-      </div>
-      <button class="icon-button" id="drawer-close" aria-label="Tutup detail">×</button>
-    </div>
-    <div class="drawer-content" id="drawer-content"></div>
-  </aside>
-
-  <dialog id="help-dialog" class="dialog">
+  <dialog id="help-dialog" class="dialog" aria-labelledby="help-title">
     <div class="dialog-header">
-      <div>
-        <h2>Panduan</h2>
-      </div>
-      <button class="icon-button" id="help-close" aria-label="Tutup panduan">×</button>
+      <h2 id="help-title">Panduan</h2>
+      <button class="icon-button" id="help-close" type="button" aria-label="Tutup panduan">×</button>
     </div>
     <div class="dialog-body">
       <ol class="help-steps">
-        <li>Pilih tender.</li>
-        <li>Periksa persyaratan dan status evidence.</li>
-        <li>Lengkapi evidence, lalu siapkan paket tender.</li>
+        <li><strong>Assessment.</strong> Isi data baseline sistem kompresor dan biaya per tindakan.</li>
+        <li><strong>Skenario.</strong> Atur asumsi pengurangan daya. Pilih opsi yang diusulkan.</li>
+        <li><strong>Analisis Finansial.</strong> Periksa angka, rumus, dan sumber di panel "Lihat Perhitungan".</li>
+        <li><strong>Evidence Review.</strong> Tandai sumber data, referensi, tanggal, dan hasil pemeriksaan engineer.</li>
+        <li><strong>Investment Brief.</strong> Cetak atau simpan ringkasan sebagai PDF untuk Plant Manager.</li>
       </ol>
       <div class="callout neutral">
-        <strong>EnergiPass tidak menggantikan CIVD atau Buyer VMS.</strong>
-        <p>Kualifikasi tetap ditentukan buyer melalui sistem resmi.</p>
+        <strong>Arti status "Ready"</strong>
+        <p>Ready berarti data yang dibutuhkan opsi diusulkan sudah punya sumber, referensi, tanggal, dan pemeriksaan engineer. Ready bukan sertifikasi, bukan audit energi bersertifikat, dan bukan verifikasi hasil (M&amp;V).</p>
       </div>
+      <div class="callout warning">
+        <strong>Data contoh adalah simulasi.</strong>
+        <p>Nama fasilitas, referensi dokumen, tarif, dan biaya pada data contoh bersifat fiktif. Angka tersebut bukan hasil pengukuran, bukan tarif resmi, dan bukan hasil pilot.</p>
+      </div>
+      <p class="subtle-note">Isian tersimpan di browser ini (localStorage) dan tidak dikirim ke server. Fitur AI, jika diaktifkan, mengirim teks audit yang Anda tempel ke server untuk diproses.</p>
     </div>
   </dialog>
 
-  <script src="mock-data.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>

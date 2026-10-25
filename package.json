@@ -4,9 +4,16 @@
   "private": true,
   "description": "Green Vendor Passport MVP for tender readiness in Indonesia's energy supply chain",
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "start": "npm run build && node scripts/serve.mjs 4173 dist",
+    "test": "node --test \"tests/unit/*.test.mjs\"",
+    "test:e2e": "npm run build && node --test --test-concurrency=1 tests/e2e/demo.e2e.mjs"
   },
   "engines": {
     "node": ">=22"
-  }
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.132.1"
+  },
+  "type": "module"
 }
