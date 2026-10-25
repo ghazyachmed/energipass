@@ -1,0 +1,8 @@
+node_modules/
+out/
+tts/.models/
+tts/.venv/
+*.mp4
+!previews/
+public/narration.wav
+__pycache__/

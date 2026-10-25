@@ -1,0 +1,53 @@
+{
+  "fps": 30,
+  "durationSeconds": 90,
+  "voice": "af_heart",
+  "speed": 0.95,
+  "leadInSeconds": 0.7,
+  "sentenceGapSeconds": 0.45,
+  "scenes": [
+    {
+      "id": "problem", "start": 0, "end": 12,
+      "sentences": [
+        { "cues": ["An energy audit can identify potential savings."] },
+        { "cues": ["But finding an opportunity does not mean", "a factory can immediately invest in it."] }
+      ]
+    },
+    {
+      "id": "review", "start": 12, "end": 27,
+      "sentences": [
+        { "cues": ["Engineers still need to examine equipment data,", "estimate repair costs, and prepare evidence for management."] },
+        { "cues": ["We want to make that process easier to review."] }
+      ]
+    },
+    {
+      "id": "compare", "start": 27, "end": 45,
+      "sentences": [
+        { "cues": ["Meet EnergiAction Bankable,", "our proposed tool for industrial energy investment decisions."],
+          "tts": "Meet Energy Action Bankable, our proposed tool for industrial energy investment decisions." },
+        { "cues": ["Engineers enter operating data and compare improvement scenarios", "using transparent calculations."] }
+      ]
+    },
+    {
+      "id": "finance", "start": 45, "end": 62,
+      "sentences": [
+        { "cues": ["In this simulated compressor case,", "the estimated electricity savings reach sixty thousand kilowatt-hours annually."] },
+        { "cues": ["With the assumed costs, simple payback is two years."] }
+      ]
+    },
+    {
+      "id": "evidence", "start": 62, "end": 78,
+      "sentences": [
+        { "cues": ["Every calculation keeps its assumptions and supporting evidence visible."] },
+        { "cues": ["We also plan to use AI to extract audit findings,", "while engineers remain responsible for validating the data."] }
+      ]
+    },
+    {
+      "id": "stage", "start": 78, "end": 90,
+      "sentences": [
+        { "cues": ["We are currently at the idea stage."] },
+        { "cues": ["Through MAJU, we aim to test this workflow with industrial users", "and measure whether it improves investment preparation."] }
+      ]
+    }
+  ]
+}

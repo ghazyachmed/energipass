@@ -1,0 +1,75 @@
+1
+00:00:00,700 --> 00:00:04,232
+An energy audit can identify potential savings.
+
+2
+00:00:04,265 --> 00:00:07,055
+But finding an opportunity does not mean
+
+3
+00:00:07,055 --> 00:00:09,579
+a factory can immediately invest in it.
+
+4
+00:00:12,700 --> 00:00:15,868
+Engineers still need to examine equipment data,
+
+5
+00:00:15,868 --> 00:00:19,880
+estimate repair costs, and prepare evidence for management.
+
+6
+00:00:19,913 --> 00:00:22,923
+We want to make that process easier to review.
+
+7
+00:00:27,700 --> 00:00:29,824
+Meet EnergiAction Bankable,
+
+8
+00:00:29,824 --> 00:00:33,813
+our proposed tool for industrial energy investment decisions.
+
+9
+00:00:33,846 --> 00:00:38,389
+Engineers enter operating data and compare improvement scenarios
+
+10
+00:00:38,389 --> 00:00:40,931
+using transparent calculations.
+
+11
+00:00:45,700 --> 00:00:47,931
+In this simulated compressor case,
+
+12
+00:00:47,931 --> 00:00:53,349
+the estimated electricity savings reach sixty thousand kilowatt-hours annually.
+
+13
+00:00:53,382 --> 00:00:57,118
+With the assumed costs, simple payback is two years.
+
+14
+00:01:02,700 --> 00:01:07,490
+Every calculation keeps its assumptions and supporting evidence visible.
+
+15
+00:01:07,523 --> 00:01:11,349
+We also plan to use AI to extract audit findings,
+
+16
+00:01:11,349 --> 00:01:15,291
+while engineers remain responsible for validating the data.
+
+17
+00:01:18,700 --> 00:01:21,229
+We are currently at the idea stage.
+
+18
+00:01:21,262 --> 00:01:25,562
+Through MAJU, we aim to test this workflow with industrial users
+
+19
+00:01:25,562 --> 00:01:29,115
+and measure whether it improves investment preparation.
