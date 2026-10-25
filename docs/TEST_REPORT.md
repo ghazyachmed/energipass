@@ -15,6 +15,7 @@ Environment: Linux, Node.js 22.22.0, npm 10.9.4, Playwright 1.63.0 dengan Chromi
 | Runtime Worker lokal | `npx wrangler@4 dev` lalu `curl` | `/api/ai/status` 200 `{"enabled":false,...}`. `/api/ai/extract` 503 `ai_disabled`. `/` dan `/src/main.js` 200. `/api/unknown` 404. |
 | Print / Save as PDF | E2E test 9 dengan `page.pdf()` | PDF A4 terbentuk. `pdftotext` memuat judul brief, label DATA SIMULASI, dan 113.520 kWh. Navigasi tidak ikut tercetak. |
 | Video demo | `node scripts/record-demo.mjs` | MP4 H.264 1280×720, 80 detik, tanpa suara. |
+| CI GitHub Actions | `.github/workflows/ci.yml` (Ubuntu, `npm ci`, unit test, build, E2E) | Run #1 pada commit `dc7fc24`: success. https://github.com/ghazyachmed/energipass/actions/runs/40202096776 |
 
 Temuan yang diperbaiki selama pengujian:
 
