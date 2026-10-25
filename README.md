@@ -1,229 +1,190 @@
-<div align="center">
+# EnergiAction Bankable
 
-  <h1>🌱 EnergiPass</h1>
-  <p><strong>Green Vendor Passport for Indonesia’s Energy Supply Chain</strong></p>
-  <p>Kenali gap persyaratan, telusuri evidence, dan tinjau kesiapan tender dalam satu dashboard.</p>
+AI-assisted Industrial Energy Investment Readiness untuk sistem kompresor.
 
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&amp;logo=html5&amp;logoColor=white" alt="HTML5" />
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&amp;logo=css&amp;logoColor=white" alt="CSS3" />
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&amp;logo=javascript&amp;logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/Status-MVP_Demo-176C66?style=for-the-badge" alt="Status: MVP Demo" />
+EnergiAction Bankable membantu energy manager, auditor energi industri, dan tim utilitas menyusun justifikasi investasi dari temuan audit sistem compressed air. Aplikasi menghitung baseline, membandingkan skenario perbaikan, menghitung simple payback, mencatat status bukti, lalu menghasilkan Investment Decision Brief yang dapat dicetak atau disimpan sebagai PDF.
 
-  <p>
-    <a href="#tentang-proyek">Tentang</a> ·
-    <a href="#menjalankan-secara-lokal">Mulai</a> ·
-    <a href="#alur-demo">Alur Demo</a> ·
-    <a href="https://github.com/GhazyUrbayani/energipass/issues">Laporkan Masalah</a>
-  </p>
+> Status: demo web untuk pendaftaran MAJU:ON 2026. Semua data contoh adalah simulasi fiktif. Fitur AI belum diaktifkan pada demo. Wawancara pengguna belum dilakukan.
 
-</div>
+## Status implementasi
 
----
-
-## Daftar Isi
-
-- [Tentang Proyek](#tentang-proyek)
-- [Fitur Utama](#fitur-utama)
-- [Tech Stack](#tech-stack)
-- [Struktur Proyek](#struktur-proyek)
-- [Menjalankan Secara Lokal](#menjalankan-secara-lokal)
-- [Alur Demo](#alur-demo)
-- [Data dan Batasan MVP](#data-dan-batasan-mvp)
-- [Hosting](#hosting)
-- [Kontribusi](#kontribusi)
-- [Pengembang dan Lisensi](#pengembang-dan-lisensi)
-
----
-
-## Tentang Proyek
-
-**EnergiPass** adalah MVP dashboard untuk membantu vendor dalam rantai pasok energi Indonesia meninjau persyaratan tender dan dokumen pendukung (*evidence*). Aplikasi memetakan kebutuhan tender terhadap evidence, menampilkan gap yang perlu ditindaklanjuti, serta merangkum kesiapan paket per kategori.
-
-### Masalah
-
-Persiapan tender membutuhkan pemeriksaan banyak jenis dokumen: legalitas perusahaan, sertifikasi teknis, HSE, TKDN, ESG, dan pengalaman proyek. Saat persyaratan dan evidence ditinjau terpisah, dokumen yang belum tersedia, kedaluwarsa, atau perlu diperiksa ulang lebih sulit terlihat.
-
-### Solusi
-
-EnergiPass menyatukan **persyaratan → evidence → status → tindakan** dalam satu alur. Pengguna dapat memilih tender, menelusuri sumber dan versi evidence, lalu melihat kategori yang masih memerlukan perhatian sebelum pengajuan.
-
-> **Status proyek: demo frontend dengan data fiktif.** EnergiPass tidak menggantikan CIVD, Buyer VMS, atau sistem pengadaan resmi. Kualifikasi dan pengajuan tetap mengikuti ketentuan buyer melalui sistem resminya.
-
-## Fitur Utama
-
-| Modul | Kemampuan |
+| Fitur | Status |
 | --- | --- |
-| **Beranda** | Tender aktif, tenggat, ringkasan status, daftar tindakan prioritas, dan aktivitas evidence demo. |
-| **Tender Gap Checker** | Pencarian persyaratan atau evidence, filter status, serta tabel sumber dan masa berlaku. |
-| **Evidence Library** | Pencarian dokumen, filter kategori/status/masa berlaku, dan panel detail evidence. |
-| **Paket Tender** | Ringkasan kesiapan per kategori dan simulasi **Siapkan Paket**. |
-| **Pergantian Tender** | Dua skenario fiktif: EPC Solar Project A dan Turbine Overhaul B. |
-| **Traceability** | Metadata sumber, referensi, versi, tanggal efektif, masa berlaku, dan pembaruan terakhir. |
+| Assessment: input baseline, jam operasi, tarif, biaya per tindakan, sumber pengukuran | Berjalan |
+| Validasi input (negatif, > 8.760 jam, persentase di luar 0-100%, NaN/Infinity, salah satuan) | Berjalan |
+| Perbandingan 4 skenario dengan perhitungan ulang langsung | Berjalan |
+| Skenario gabungan sekuensial (tanpa penghitungan ganda) | Berjalan |
+| Analisis finansial dengan panel "Lihat Perhitungan" (rumus, substitusi, sumber) | Berjalan |
+| Uji realisasi penghematan 50%, 75%, 100% | Berjalan |
+| Estimasi CO₂ hanya jika faktor emisi, wilayah, tahun, dan sumber lengkap | Berjalan, tanpa nilai default |
+| Evidence Review dengan status Ready (bukan sertifikasi) | Berjalan |
+| Investment Brief: Cetak / Simpan PDF dan salin sebagai teks | Berjalan |
+| Penyimpanan isian di browser (localStorage) | Berjalan |
+| Endpoint AI ekstraksi teks audit di Cloudflare Worker | Kode tersedia dan diuji dengan stub. Belum aktif. Belum diuji terhadap API model nyata. |
+| Akun pengguna, kolaborasi tim, unggah dokumen | Belum ada |
+| NPV, IRR, eskalasi tarif, biaya beban kVA | Belum ada |
+| URL demo publik | Belum di-deploy dari sesi ini. Lihat bagian Deployment. |
 
-Antarmuka responsif dilengkapi label form, tabel semantik, skip link, indikator fokus keyboard, dan teks status selain warna.
+## Alur kerja
 
-### Status Kesiapan
+```mermaid
+graph LR
+  A[1. Assessment] --> B[2. Skenario]
+  B --> C[3. Analisis Finansial]
+  C --> D[4. Evidence Review]
+  D --> E[5. Investment Brief]
+  T[Teks audit] -. opsional, AI .-> P[Usulan terstruktur + kutipan]
+  P -. validasi engineer .-> A
+```
 
-| Status | Arti dalam demo |
+AI hanya mengusulkan nama peralatan, masalah, parameter yang tertulis di teks, informasi yang belum tersedia, dan jenis pemeriksaan lanjutan. Semua hasil finansial dihitung oleh kode deterministik setelah input lolos validasi.
+
+## Rumus
+
+| Besaran | Rumus |
 | --- | --- |
-| **Ready** | Persyaratan ditandai siap pada data contoh. |
-| **Missing** | Evidence belum tersedia atau belum ditautkan. |
-| **Expired** | Evidence ditandai kedaluwarsa pada data contoh. |
-| **Needs Review** | Evidence perlu dicocokkan kembali dengan persyaratan tender. |
+| Annual Energy (kWh/tahun) | Power (kW) × Operating Hours (jam/tahun) |
+| Daya setelah perbaikan | P₀ × (1 − r₁) × (1 − r₂) untuk tindakan yang tumpang tindih |
+| Annual Savings (kWh/tahun) | Baseline Energy − Post-improvement Energy |
+| Penghematan biaya listrik | Annual Savings × tarif (Rp/kWh) |
+| Annual Net Savings | Penghematan biaya listrik − biaya operasional tambahan |
+| Simple Payback (tahun) | Investment Cost ÷ Annual Net Savings, hanya jika Net Savings > 0 |
+| CO₂ (tCO₂/tahun) | Annual Savings (MWh) × faktor emisi (tCO₂/MWh), hanya jika sumber lengkap |
 
-## Tech Stack
+Implementasi: `src/domain/calculations.js`. Contoh data simulasi A: 110 kW × 6.000 jam = 660.000 kWh/tahun. Gabungan 10% dan 8% menghemat 113.520 kWh/tahun, bukan 118.800 kWh/tahun.
 
-| Komponen | Teknologi |
+## Aturan validasi input
+
+| Input | Ditolak jika |
 | --- | --- |
-| Markup | HTML5 |
-| Styling | CSS3, CSS custom properties, Grid, dan Flexbox |
-| Interaksi | JavaScript murni dan DOM API |
-| Data demo | Objek JavaScript dalam `mock-data.js` |
-| State dan navigasi | State di memori browser; pergantian tampilan dalam satu halaman |
-| Server lokal | HTTP server bawaan Python 3 |
-| Build untuk hosting | Node.js 22+ dan npm; menyalin asset statis ke `dist/` |
-| Deployment | Cloudflare Workers Static Assets dan Wrangler 4 |
+| Daya (kW) | ≤ 0, negatif, atau > 10.000 kW (indikasi salah satuan W/kWh) |
+| Jam operasi | ≤ 0 atau > 8.760 jam/tahun. Mode harian: > 24 jam/hari, > 366 hari, atau hasil kali > 8.760 |
+| Tarif | < Rp 100/kWh (indikasi salah pemisah ribuan) atau > Rp 10.000/kWh (indikasi Rp/MWh) |
+| Persentase pengurangan daya | < 0% atau > 100% |
+| Biaya | Negatif |
+| Faktor emisi | ≤ 0 atau > 2 tCO₂/MWh (indikasi gCO₂/kWh) |
+| Semua angka | Kosong, huruf, notasi eksponen, NaN, Infinity |
 
-Aplikasi berjalan tanpa library npm, backend, database, API key, atau file `.env`. Browser langsung memuat HTML, CSS, dan JavaScript. Build opsional untuk hosting menggunakan Node.js dan npm tanpa instalasi dependensi aplikasi.
+Format angka: `1115`, `1.115`, dan `45.000.000` dibaca sebagai bilangan bulat. `0,5` dan `12.5` dibaca sebagai desimal. Setiap field menampilkan nilai yang terbaca.
 
-## Struktur Proyek
+Kesalahan pada satu kelompok input hanya memblokir hasil yang bergantung padanya. Contoh: input optimasi kontrol yang tidak valid memblokir S2 dan S3, sedangkan S1 tetap dihitung.
+
+## Arti status Ready
+
+Ready berarti setiap data yang dibutuhkan opsi diusulkan memiliki jenis data, referensi dokumen, tanggal dokumen, dan status "Diperiksa engineer". Baseline daya wajib berasal dari pengukuran. Ready bukan sertifikasi, bukan audit energi oleh auditor bersertifikat, dan bukan verifikasi hasil (M&V).
+
+## Fitur AI (opsional)
+
+| Hal | Implementasi |
+| --- | --- |
+| Lokasi | `worker/handler.js` (server), `src/ai/extraction-schema.js` (schema dan validator bersama), `src/ai/client.js` (browser) |
+| Model | `claude-opus-5-5` melalui `@anthropic-ai/sdk` 0.132.1, structured output JSON schema |
+| Kredensial | Secret server `ANTHROPIC_API_KEY`. Kunci tidak pernah dikirim ke browser. |
+| Tanpa secret | `/api/ai/status` mengembalikan `enabled: false`. UI menampilkan "AI belum diaktifkan". Input manual tetap berjalan. |
+| Penjaga | Schema tanpa field penghematan atau payback. Setiap item wajib memiliki kutipan verbatim. Validator menolak kutipan yang tidak ada di teks dan nilai yang tidak tertulis di kutipan. Nilai masuk formulir hanya setelah engineer klik "Isi ke formulir". |
+| Status pengujian | Diuji dengan stub fetch lokal. Belum diuji terhadap API model nyata. |
+
+Mengaktifkan AI pada URL publik membuat setiap pengunjung dapat memicu biaya API. Pasang batas pengeluaran di akun penyedia dan rate limiting di Cloudflare sebelum mengaktifkan.
+
+## Struktur proyek
 
 ```text
 energipass/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml  # Build dan deployment Cloudflare Workers
-├── scripts/
-│   └── build.mjs       # Menyalin empat asset aplikasi ke dist/
-├── .gitattributes      # Pengaturan Git
-├── .gitignore          # File lokal yang diabaikan Git
-├── .node-version       # Node.js 22 untuk build
-├── index.html          # Kerangka aplikasi, navigasi, drawer, dan panduan
-├── styles.css          # Tema, komponen, responsivitas, dan fokus keyboard
-├── mock-data.js        # Vendor, tender, persyaratan, evidence, dan aktivitas demo
-├── app.js              # State, rendering halaman, pencarian, filter, dan interaksi
-├── package.json        # Perintah npm run build; tanpa dependensi aplikasi
-├── wrangler.jsonc      # Konfigurasi Workers Static Assets
-├── dist/               # Hasil build; dibuat otomatis dan diabaikan Git
-└── README.md           # Dokumentasi proyek
+├── index.html                 Kerangka aplikasi, navigasi, dialog panduan
+├── styles.css                 Tampilan, responsif, dan aturan cetak (print)
+├── src/
+│   ├── domain/                Perhitungan, validasi, evidence, brief (tanpa DOM)
+│   ├── fixtures/              Data simulasi A dan B (fiktif)
+│   ├── ai/                    Schema, validator, dan client AI opsional
+│   ├── state/                 Penyimpanan localStorage
+│   ├── ui/                    Rendering layar dan view model
+│   └── main.js                Routing, event, pembaruan langsung
+├── worker/                    Cloudflare Worker: asset statis dan /api/ai/*
+├── tests/unit/                Unit test (node:test)
+├── tests/e2e/                 End-to-end test (Playwright, Chromium)
+├── scripts/                   build, server lokal, perekam video demo
+├── docs/                      Validasi masalah, catatan MAJU:ON, skrip video, laporan test, screenshot
+└── wrangler.jsonc             Konfigurasi Workers + Static Assets
 ```
 
-## Menjalankan Secara Lokal
+## Menjalankan secara lokal
 
-### Prasyarat
-
-- Browser modern seperti Chrome, Firefox, Edge, atau Safari.
-- **Python 3** untuk menjalankan server lokal.
-- **Git** jika ingin mengambil proyek melalui clone; unduhan ZIP juga dapat digunakan.
-
-### 1. Ambil Proyek
+Prasyarat: Node.js 22 atau lebih baru.
 
 ```bash
-git clone https://github.com/GhazyUrbayani/energipass.git
+git clone https://github.com/ghazyachmed/energipass.git
 cd energipass
+git checkout claude/sweet-newton-rqi1vx
+npm ci
+npm start
 ```
 
-Jika proyek sudah diunduh, buka terminal pada folder `energipass` yang berisi `index.html`.
+Buka http://localhost:4173. Server lokal tidak menyediakan endpoint AI, sehingga UI menampilkan "AI belum diaktifkan".
 
-### 2. Jalankan Server
-
-```bash
-python3 -m http.server 4173 --bind 127.0.0.1
-```
-
-Pada Windows, gunakan `py -3 -m http.server 4173 --bind 127.0.0.1` jika perintah `python3` tidak tersedia.
-
-### 3. Buka Aplikasi
-
-Buka **[http://localhost:4173](http://localhost:4173)**. Tidak diperlukan instalasi paket atau konfigurasi tambahan. Tekan `Ctrl+C` pada terminal untuk menghentikan server.
-
-Jika port `4173` sedang digunakan, ganti dengan port lain, misalnya `4174`, lalu buka alamat dengan port yang sama.
-
-## Alur Demo
-
-1. Di **Beranda**, pilih tender aktif dan lihat ringkasan **Ready**, **Missing**, **Expired**, serta **Needs Review**.
-2. Klik **Periksa Tender** untuk melihat persyaratan. Gunakan pencarian atau filter status untuk menemukan gap.
-3. Klik **Lihat** pada evidence yang ditautkan untuk memeriksa sumber, referensi, versi, dan masa berlakunya.
-4. Buka **Evidence** untuk menelusuri seluruh metadata dokumen menurut kategori, status, atau masa berlaku.
-5. Buka **Paket Tender**, tinjau kesiapan per kategori, lalu klik **Siapkan Paket** untuk melihat konfirmasi simulasi.
-6. Ganti tender untuk membandingkan kebutuhan skenario EPC Solar dengan Turbine Overhaul.
-
-Tombol **Tambah Evidence** belum mengunggah atau menyimpan dokumen. Tombol tersebut mengarahkan pengguna ke halaman Evidence atau menampilkan informasi bahwa penambahan belum tersedia.
-
-## Data dan Batasan MVP
-
-Dataset dalam `mock-data.js` mencakup **1 vendor fiktif**, **2 tender**, **35 persyaratan** (27 + 8), dan **23 entri metadata evidence**. Kategorinya meliputi Legal, Teknis, HSE, TKDN, ESG, dan Pengalaman proyek.
-
-- **Seluruh data adalah contoh.** Nama perusahaan, buyer, tender, referensi, dan aktivitas tidak mewakili transaksi atau verifikasi nyata.
-- **Dokumen berupa metadata.** Nama berakhiran `.pdf` adalah label contoh; repository tidak menyertakan file dokumen tersebut.
-- **Status dan tanggal bersifat statis.** Masa berlaku, status kesiapan, aktivitas, dan waktu konfirmasi paket mengikuti data demo, tanpa validasi otomatis terhadap tanggal saat ini.
-- **Belum ada penyimpanan permanen.** Pilihan tender, filter, dan konfirmasi paket berada di memori browser dan kembali ke kondisi awal saat halaman dimuat ulang.
-- **Paket tender masih simulasi.** Aksi **Siapkan Paket** menampilkan ringkasan; belum menghasilkan PDF, ZIP, unduhan, atau pengajuan tender.
-- **Belum ada integrasi eksternal.** Label seperti “Buyer VMS” hanya menunjukkan sumber contoh dan tidak menyatakan koneksi, sinkronisasi, atau dukungan dari sistem tersebut.
-
-Untuk mengubah skenario demo, edit `mock-data.js` dan pertahankan hubungan ID antara tender, persyaratan, dan evidence. Muat ulang browser setelah mengubah file.
-
-## Hosting
-
-### Build Asset Statis
-
-Dengan **Node.js 22+** dan **npm**, jalankan dari root repository:
+Untuk menjalankan Worker lengkap (asset + endpoint AI) secara lokal:
 
 ```bash
 npm run build
+npx wrangler@4 dev
 ```
 
-Perintah ini menyiapkan `dist/` berisi `index.html`, `styles.css`, `mock-data.js`, dan `app.js`. Tidak perlu `npm install` untuk build. Folder hasil build dibersihkan setiap kali perintah dijalankan; simpan perubahan pada file sumber.
-
-Untuk memeriksa hasil build secara lokal:
+## Pengujian
 
 ```bash
-python3 -m http.server 4173 --bind 127.0.0.1 --directory dist
+npm test            # unit test: rumus, validasi, skenario, evidence, brief, schema AI, Worker, batas karakter catatan MAJU
+npm run test:e2e    # build + end-to-end test di Chromium (desktop dan mobile)
 ```
 
-Jika menambahkan gambar, font, atau asset lain, sertakan juga dalam daftar `assets` di [`scripts/build.mjs`](scripts/build.mjs).
+`npm run test:e2e` membutuhkan paket `playwright` dan Chromium. Jika belum ada: `npm install --no-save playwright@1.63.0 && npx playwright install chromium`. Hasil terakhir: `docs/TEST_REPORT.md`.
 
-### Cloudflare Workers Builds
+## Deployment (Cloudflare Workers)
 
-Konfigurasi [`wrangler.jsonc`](wrangler.jsonc) menyajikan `dist/` melalui **Workers Static Assets**. Atur proyek yang terhubung ke GitHub di **Settings → Build**:
+Deployment belum dijalankan dari sesi pengembangan ini karena membutuhkan akun Cloudflare. Pilih salah satu jalur.
+
+Jalur A: Workers Builds (Git integration). Atur di Cloudflare dashboard, Settings → Build:
 
 | Pengaturan | Nilai |
 | --- | --- |
-| Repository | `GhazyUrbayani/energipass` |
-| Production branch | `main` |
-| Root directory | Root repository (`/`) |
-| Build command | `npm run build` |
+| Repository | `ghazyachmed/energipass` |
+| Branch | `main` setelah branch kerja di-merge, atau branch kerja untuk preview |
+| Build command | `npm ci && npm run build` |
 | Deploy command | `npx wrangler@4 deploy` |
-| Nama Worker | `energipass`, sesuai `name` di `wrangler.jsonc` |
+| Nama Worker | `energipass` (harus sama dengan `name` di `wrangler.jsonc`) |
 
-Jika nama Worker pada Cloudflare berbeda, sesuaikan `name` di `wrangler.jsonc` dengan nama tersebut. Commit dan push file konfigurasi serta sumber aplikasi, lalu jalankan ulang build Cloudflare. `dist/` tidak perlu diunggah ke Git karena dibuat oleh build.
+Jalur B: GitHub Actions. Workflow `.github/workflows/deploy.yml` berjalan saat push ke `main`. Workflow ini membutuhkan secret repository `CLOUDFLARE_API_TOKEN`. Pakai satu jalur saja agar satu push tidak memicu dua deployment.
 
-Pengaturan build dan deploy mengikuti [dokumentasi Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/), sedangkan direktori asset mengikuti [dokumentasi Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/binding/).
+Jalur C: manual dari komputer sendiri:
 
-### GitHub Actions
+```bash
+npm ci && npm test && npm run build
+npx wrangler@4 login
+npx wrangler@4 deploy
+```
 
-Workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) menyediakan jalur deployment melalui GitHub Actions: menyiapkan Node.js, menjalankan build, lalu memanggil Wrangler 4. Jalur ini memerlukan secret repository `CLOUDFLARE_API_TOKEN` yang memiliki akses ke akun Cloudflare tujuan. Jika menggunakan Workers Builds, workflow GitHub Actions tidak wajib; pilih satu jalur otomatis agar setiap push tidak memicu dua deployment.
+Setelah deploy, buka URL `https://energipass.<subdomain-akun>.workers.dev` di jendela private browser. Pastikan aplikasi terbuka tanpa login (tidak ada Cloudflare Access pada route tersebut). Pakai URL ini untuk pendaftaran, bukan localhost.
 
-Untuk layanan hosting statis lain, gunakan `npm run build` sebagai build command dan `dist` sebagai direktori output. URL demo publik belum dicantumkan dalam dokumentasi.
+Hosting statis lain juga dapat menyajikan folder `dist/`. Pada hosting statis, fitur AI tidak tersedia.
 
-## Kontribusi
+## Data dan batasan
 
-Perbaikan dokumentasi, aksesibilitas, antarmuka, dan skenario demo dapat diajukan melalui issue atau pull request.
+- Data simulasi A dan B adalah fiktif. Nama fasilitas, referensi dokumen, tarif, dan biaya tidak mewakili perusahaan, pengukuran, penawaran, atau tarif resmi.
+- Simple payback tidak memperhitungkan nilai waktu uang, inflasi, pajak, depresiasi, dan umur peralatan.
+- Tarif dianggap konstan. Biaya beban kVA dan eskalasi tarif tidak dihitung.
+- Persentase pengurangan daya diisi engineer. Pada kompresor load/unload, pengurangan kebocoran tidak menurunkan daya secara proporsional.
+- Isian tersimpan hanya di browser pengguna. Tidak ada database server.
 
-1. Fork repository dan buat branch untuk perubahan.
-2. Sesuaikan file terkait; gunakan data fiktif untuk contoh dokumen dan perusahaan.
-3. Jalankan aplikasi secara lokal dan periksa keempat halaman, pergantian tender, pencarian/filter, panel detail evidence, serta simulasi paket pada ukuran desktop dan seluler.
-4. Buka pull request dengan penjelasan perubahan dan hasil pemeriksaan.
+## Dokumen pendukung
 
-## Pengembang dan Lisensi
+- `docs/PROBLEM_VALIDATION.md`: klaim dari sumber publik, status verifikasi, dan hipotesis produk yang belum diuji.
+- `docs/MAJUON_APPLICATION_NOTES.md`: draf jawaban enam pertanyaan MAJU:ON (maksimal 1.400 karakter per jawaban).
+- `docs/DEMO_VIDEO_SCRIPT.md`: storyboard video 90 detik.
+- `docs/TEST_REPORT.md`: hasil pengujian aktual.
+- `docs/screenshots/`: tangkapan layar desktop dan mobile.
 
-Dikembangkan oleh **[Ghazy Urbayani](https://github.com/GhazyUrbayani)**.
+## Riwayat
 
-Repository ini belum menyertakan berkas `LICENSE`; lisensi proyek belum dicantumkan.
+Versi sebelumnya, EnergiPass (Green Vendor Passport untuk pemeriksaan dokumen tender), tetap tersedia di branch `main` sampai branch kerja ini di-merge. Konsep Evidence Library dan status data dipakai ulang di Evidence Review dengan logika baru untuk data audit energi.
 
----
+## Pengembang dan lisensi
 
-<div align="center">
-  <strong>EnergiPass · Green Vendor Passport</strong><br />
-  <sub>Membantu vendor meninjau kesiapan evidence sebelum pengajuan tender.</sub>
-</div>
+Dikembangkan oleh [Ghazy Urbayani](https://github.com/GhazyUrbayani). Repository belum menyertakan berkas `LICENSE`.

@@ -22,7 +22,8 @@ function metricCell(scenarioId, metric) {
     return `<td class="num" ${label}><span><span data-bind="${key}"></span><span class="cell-sub" data-bind="scn.${esc(scenarioId)}.savingsPct"></span></span></td>`;
   }
   if (metric === 'payback') return `<td class="num payback-cell" ${label} data-bind="${key}" data-status-bind="${key}"></td>`;
-  return `<td class="num" ${label} data-bind="${key}"></td>`;
+  const optional = metric === 'energyAfter' ? ' col-optional' : '';
+  return `<td class="num${optional}" ${label} data-bind="${key}"></td>`;
 }
 
 export const scenariosScreen = {
@@ -71,7 +72,7 @@ export const scenariosScreen = {
       <div class="table-wrap">
         <table class="scenario-table">
           <caption class="visually-hidden">Perbandingan empat skenario perbaikan sistem kompresor</caption>
-          <thead><tr><th scope="col">Skenario (pilih usulan)</th>${METRICS.map(([, label]) => `<th scope="col">${esc(label)}</th>`).join('')}</tr></thead>
+          <thead><tr><th scope="col">Skenario (pilih usulan)</th>${METRICS.map(([metric, label]) => `<th scope="col"${metric === 'energyAfter' ? ' class="col-optional"' : ''}>${esc(label)}</th>`).join('')}</tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>

@@ -159,10 +159,12 @@ tbody th{background:transparent;text-transform:none;letter-spacing:0;font-size:1
 tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
 .num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .cell-sub{display:block;font-size:12.5px;color:var(--slate-600);margin:3px 0 0;font-weight:400}
-.scenario-table{min-width:980px}
-.scenario-table th,.scenario-table td{padding:10px 10px;font-size:13.5px}
-.scenario-table tbody th{min-width:190px}
-.payback-cell{white-space:normal;min-width:120px}
+.scenario-table{min-width:860px}
+.scenario-table th,.scenario-table td{padding:10px 8px;font-size:13px}
+.scenario-table thead th{font-size:11px}
+.scenario-table tbody th{min-width:170px}
+.payback-cell{white-space:normal;min-width:110px}
+@media (max-width:1366px) and (min-width:701px){.scenario-table .col-optional{display:none}}
 .scenario-table tbody tr:has(input:checked){background:var(--teal-100)}
 .scenario-choice{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
 .scenario-code{display:inline-block;font-size:11px;font-weight:800;color:var(--teal-700);border:1px solid #a9d0cb;padding:0 5px;margin-right:2px}
